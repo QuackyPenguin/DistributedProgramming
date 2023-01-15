@@ -1,0 +1,14 @@
+[i=(1..N)proc(i)::p||coord::coord]
+
+p[
+    coord!wait();
+    coord!signal();
+]
+
+coord[
+    int s=0;
+    *[
+        s>0;(1..N)proc(i)?wait()->s--;
+        [] (1..N)proc(i)?signal()->s++;
+    ]
+]

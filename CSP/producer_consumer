@@ -1,0 +1,23 @@
+[Producer(1..Np)::P||Consumer(1..Nc)::C||Coordinator::Coordinator]
+
+Coordinator::[
+    Item buf[N];
+    int head=0,tail=0,cnt=0;
+    Item data;
+    cnt<N;Producer(i:1..Np)?put(data) -> buf[head++]=data; head%=N; cnt++; Producer(i)!ack;
+    cnt>0;Consumer(i:1..Np)?get() -> data=buf[tail++]; tail%=N; cnt--; Consumer(i)!data;
+]
+
+P::*[
+    Item data=produce();
+    Coordinator!put(data);
+    Coordinator?ack;
+]
+
+
+C::*[
+    Item data;
+    Coordinator!get();
+    Coordinator?data;
+    consume(data);
+]

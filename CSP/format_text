@@ -1,0 +1,47 @@
+copy[
+    char c;
+    *[
+        west?c -> east!c
+    ]
+]
+
+squash[
+    char c;
+    *[
+        west?c->[
+            c=='*'; west?c->[
+                c=='*' -> east!'^';
+                [] c!='*' -> east!'*'; east!c
+            ]
+            c!='*' -> east!c
+        ]
+    ]
+]
+
+diassemble[
+    char img[80];
+    int i;
+    *[
+        cardfile?cardimage -> [
+            i=0;
+            *[
+                i<80 -> X!img[i]; i++
+            ]
+            X!' '
+        ]
+    ]
+]
+
+assemble[
+    char line[125], c;
+    int i;
+    *[
+        i=0;
+        X?c -> line[i]=c;
+        [
+            i<125 -> i++;
+            [] i==125 -> printer!line; i=0
+        ]
+    ]
+    i>0 -> *[i<125 -> line[i]; i++] printer!line
+]

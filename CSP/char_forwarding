@@ -1,0 +1,33 @@
+FORMATA:: bool up=true, space=false; char c;
+*[
+    A?c->[
+        c=='.' -> up=true; [space -> B!' '; space=false]
+        [] c==' ' -> space=true;
+        [] c!='.'; c!=' ' -> [
+            [ space -> A!' '; space=false]
+            [ up -> upper(c); up=false;
+            [] !up -> lower(c)
+        ]
+    ]
+]
+
+FORMATB:: char p=CR, c; int num=0;
+*[
+    A?c -> [
+        c!=CR, num==0 -> p=c; num=1;
+        [] c!=CR;num<N;num>0 -> [
+            c==p -> num++;
+            [] c!=p -> int i=0; *[ i<num -> B!c; i++ ] p=c; num=1;
+        ]
+        [] c!=CR; num>=N ->[
+            c==p -> num++;01111
+            [] c!=p -> A!'@'; A!c; A!num; num=1
+        ]
+        [] c==CR -> [
+            num==1 -> A!p;
+            [] num>1;num<N -> int i=0; *[ i<num -> B!c; i++ ]
+            [] num>=N -> A!'@'; A!c; A!num
+            ]           
+        ]
+    ]
+]
